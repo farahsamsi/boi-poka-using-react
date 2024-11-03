@@ -1,15 +1,25 @@
 import React from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
+import { addToStoreReadList } from '../../Utility/AddToDb';
 
 const BookDetail = () => {
     const { bookId } = useParams();
     const id = parseInt(bookId);
 
     const data = useLoaderData();
+    console.log(data);
 
-    const book = data.find(book => book.bookId === id);
+
+    const book = data.find(book => {
+        return book.bookId === id;
+    });
+    console.log(book);
 
     const { bookId: currentBookId, image, bookName, author, review, totalPages, rating, category, tags, publisher, yearOfPublishing } = book;
+
+    const handleMarkAsRead = (id) => {
+        addToStoreReadList(id);
+    }
 
     return (
         <div className="hero  min-h-screen">
@@ -70,8 +80,11 @@ const BookDetail = () => {
                     </div>
 
                     <div className='space-x-4 '>
-                        <button className="btn btn-outline text-lg font-semibold">Read</button>
-                        <button className="btn text-lg font-semibold bg-[#50B1C9] text-white">Whislist</button>
+                        <button
+                            className="btn btn-outline text-lg font-semibold"
+                            onClick={() => handleMarkAsRead(id)}
+                        >Mark As Read</button>
+                        <button className="btn text-lg font-semibold bg-[#50B1C9] text-white">Add To Whislist</button>
                     </div>
                 </div>
             </div>
